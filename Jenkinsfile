@@ -52,7 +52,17 @@ pipeline {
             script {
                 echo "开始打包"
 
-                sh "sh pack.sh"
+                sh "bash pack.sh"
+            }
+        }
+    }
+
+    stage("deploy") {
+        steps {
+            script {
+                echo "开始发布"
+                    
+                sh "bash deploy.sh"
             }
         }
     }

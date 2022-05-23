@@ -32,4 +32,38 @@ pipeline {
             }
         }    
     }
+
+    stage("build") {
+        steps {
+            script {
+                echo "开始构建"
+
+                sh "docker run --rm -it \
+                    -v /root/.nuget/packages:/root/.nuget/packages \
+                    -v ${env.WORKSPACE_ON_HOST}:/workspace \
+                    mcr.microsoft.com/dotnet/sdk:5.0-alpine \
+                    sh -c 'cd /workspace && sh build.sh'"
+            }
+        }
+    }
+
+    stage("package") {
+        steps {
+            script {
+                echo "开始打包"
+
+                sh "bash pack.sh"
+            }
+        }
+    }
+
+    stage("deploy") {
+        steps {
+            script {
+                echo "开始发布"
+                    
+                sh "bash deploy.sh"
+            }
+        }
+    }
 }

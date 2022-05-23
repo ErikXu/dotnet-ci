@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cd src
-
-rm -rf ../publish
-
-dotnet publish -c Release -o ../publish -r alpine-x64 /p:PublishSingleFile=true /p:PublishTrimmed=true /p:DebugType=None /p:DebugSymbols=false --self-contained true
+docker run --rm -i \
+    -v /root/.nuget/packages:/root/.nuget/packages \
+    -v ${PWD}:/workspace \
+    mcr.microsoft.com/dotnet/sdk:5.0-alpine \
+    sh -c 'cd /workspace && sh publish.sh'
